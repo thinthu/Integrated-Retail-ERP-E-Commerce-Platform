@@ -1,0 +1,1 @@
+{ "name": "khit-ride-tools", "private": true, "type": "module", "dependencies": { "@huggingface/transformers": "^3.0.0" } }

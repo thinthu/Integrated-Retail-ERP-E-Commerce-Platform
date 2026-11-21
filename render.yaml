@@ -1,0 +1,32 @@
+# Render "Blueprint": creates the Spring Boot API (Docker) and a PostgreSQL database.
+databases:
+  - name: khit-db
+    databaseName: epc
+    plan: free
+services:
+  - type: web
+    name: khit-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /api/products
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: postgres
+      - key: DB_HOST
+        fromDatabase: { name: khit-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: khit-db, property: port }
+      - key: DB_NAME
+        fromDatabase: { name: khit-db, property: database }
+      - key: DB_USER
+        fromDatabase: { name: khit-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: khit-db, property: password }
+      - key: CORS_ORIGINS
+        value: https://*.vercel.app
+      - key: JAVA_TOOL_OPTIONS
+        value: -Xmx384m
+      - key: ANTHROPIC_API_KEY
+        sync: false
